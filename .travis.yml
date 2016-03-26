@@ -1,0 +1,18 @@
+language: php
+
+php:
+  - 7.0
+  - hhvm
+
+matrix:
+  allow_failures:
+    - php: hhvm
+
+install:
+  - composer install --no-interaction --prefer-source --dev
+
+script:
+  - phpunit --coverage-clover build/coverage-clover.xml
+
+after_script:
+  - '[ "7.0" = "$(phpenv version-name)" ] && composer require satooshi/php-coveralls:dev-master && vendor/bin/coveralls -v'

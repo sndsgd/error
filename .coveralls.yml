@@ -1,0 +1,3 @@
+src_dir: src
+coverage_clover: build/coverage-clover.xml
+json_path: build/coverage-coveralls.json
