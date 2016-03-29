@@ -17,6 +17,9 @@
     "require": {
         "php": ">=7.0"
     },
+    "require-dev": {
+        "satooshi/php-coveralls": "~1.0"
+    },
     "autoload": {
         "psr-4": {
             "sndsgd\\": "src/"
