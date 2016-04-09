@@ -2,7 +2,7 @@
 
 namespace sndsgd;
 
-class Error implements ErrorInterface
+class Error implements ErrorInterface, \JsonSerializable
 {
     /**
      * A public facing message
@@ -38,5 +38,13 @@ class Error implements ErrorInterface
             "message" => $this->getMessage(),
             "code" => $this->getCode(),
         ];
+    }
+
+    /**
+     * @see http://php.net/manual/en/jsonserializable.jsonserialize.php
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

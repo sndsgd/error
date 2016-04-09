@@ -24,4 +24,22 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
             ["the message", 42]
         ];
     }
+
+    /**
+     * @dataProvider providerJsonSerialize
+     */
+    public function testJsonSerialize($message, $code)
+    {
+        $error = new Error($message, $code);
+        $expect = "{\"message\":\"$message\",\"code\":$code}";
+        $this->assertSame($expect, json_encode($error, \sndsgd\Json::SIMPLE));
+    }
+
+    public function providerJsonSerialize()
+    {
+        return [
+            ["message", 42],
+            [\sndsgd\Str::random(200), PHP_INT_MAX],
+        ];
+    }
 }
