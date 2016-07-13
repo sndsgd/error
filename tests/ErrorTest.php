@@ -2,9 +2,39 @@
 
 namespace sndsgd;
 
+/**
+ * @coversDefaultClass \sndsgd\Error
+ */
 class ErrorTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @covers ::createMessage
+     */
+    public function testCreateMessage()
+    {
+        @file_get_contents(42);
+        $message = Error::createMessage("test");
+
+        $match = "test; file_get_contents(";
+        $this->assertTrue(strpos($message, $match) === 0);
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::getMessage
+     * @covers ::getCode
+     */
+    public function testSimple()
+    {
+        $message = \sndsgd\Str::random(42);
+        $code = mt_rand();
+        $error = new Error($message, $code);
+        $this->assertSame($message, $error->getMessage());
+        $this->assertSame($code, $error->getCode());
+    }
+
+    /**
+     * @covers ::toArray
      * @dataProvider providerToArray
      */
     public function testToArray($message, $code)
@@ -26,6 +56,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::jsonSerialize
      * @dataProvider providerJsonSerialize
      */
     public function testJsonSerialize($message, $code)

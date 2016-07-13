@@ -5,13 +5,30 @@ namespace sndsgd;
 class Error implements ErrorInterface, \JsonSerializable
 {
     /**
-     * A public facing message
+     * Append a message with the message from the last encountered error
+     *
+     * @param string $message The message to append
+     * @return string
+     */
+    public static function createMessage(string $message): string
+    {
+        $lastErrorMessage = error_get_last();
+        if ($lastErrorMessage !== null) {
+            $message .= "; ".$lastErrorMessage["message"];
+        }
+        return $message;
+    }
+
+    /**
+     * A human readable message
+     *
      * @var string
      */
     protected $message;
 
     /**
-     * A code that indicates a specific error case
+     * A code that indicates the specific error instance
+     *
      * @var int
      */
     protected $code;
@@ -22,16 +39,25 @@ class Error implements ErrorInterface, \JsonSerializable
         $this->code = $code;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getMessage(): string
     {
         return $this->message;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getCode(): int
     {
         return $this->code;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function toArray(): array
     {
         return [
